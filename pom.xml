@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>it.tdlight</groupId>
+	<artifactId>telegrambackup</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>telegrambackup</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<repositories>
+
+		<!-- Add the following repository -->
+		<repository>
+			<id>mchv</id>
+			<name>MCHV Apache Maven Packages</name>
+			<url>https://mvn.mchv.eu/repository/mchv/</url>
+		</repository>
+
+	</repositories>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>it.tdlight</groupId>
+				<artifactId>tdlight-java-bom</artifactId>
+				<version>3.1.3+td.1.8.16</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		
+	</dependencies>
+</project>

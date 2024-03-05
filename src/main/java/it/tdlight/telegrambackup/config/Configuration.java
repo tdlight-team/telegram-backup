@@ -1,8 +1,6 @@
-package it.tdlight.telegrambackup;
+package it.tdlight.telegrambackup.config;
 
-import it.tdlight.jni.TdApi.User;
-
-public class Settings {
+public class Configuration {
 	public UserSettings[] users;
 
 	public static class UserSettings {
@@ -11,9 +9,10 @@ public class Settings {
 		public String phoneNumber;
 		public String botToken;
 
-		public void validate() {
+		public void validate() throws ConfigurationException {
+
 			if ((phoneNumber != null) == (botToken != null)) {
-				throw new UnsupportedOperationException("Please set either a bot token or a phone number");
+				throw new ConfigurationException("Please set either a bot token or a phone number");
 			}
 		}
 
@@ -26,7 +25,7 @@ public class Settings {
 		}
 	}
 
-	public void validate() {
+	public void validate() throws ConfigurationException {
 		for (UserSettings user : users) {
 			user.validate();
 		}

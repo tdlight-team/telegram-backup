@@ -13,6 +13,7 @@ import it.tdlight.client.TDLibSettings;
 import it.tdlight.jni.TdApi;
 import it.tdlight.jni.TdApi.Chat;
 import it.tdlight.jni.TdApi.MessageSender;
+import it.tdlight.jni.TdApi.Update;
 import it.tdlight.jni.TdApi.UpdateAuthorizationState;
 import it.tdlight.jni.TdApi.UpdateNewMessage;
 import it.tdlight.telegrambackup.config.Configuration;
@@ -73,6 +74,11 @@ public class TelegramSessionManager implements AutoCloseable {
 
 		// Add an example update handler that prints every received message
 		clientBuilder.addUpdateHandler(TdApi.UpdateNewMessage.class, this::onUpdateNewMessage);
+		clientBuilder.addUpdatesHandler(this::onUpdate);
+	}
+
+	private void onUpdate(Update update) {
+
 	}
 
 	private void onUpdateNewMessage(UpdateNewMessage updateNewMessage) {

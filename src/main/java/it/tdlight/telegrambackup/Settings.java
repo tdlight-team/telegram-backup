@@ -13,8 +13,16 @@ public class Settings {
 
 		public void validate() {
 			if ((phoneNumber != null) == (botToken != null)) {
-				throw new UnsupportedOperationException("Bot ");
+				throw new UnsupportedOperationException("Please set either a bot token or a phone number");
 			}
+		}
+
+		public boolean isBot() {
+			return botToken != null;
+		}
+
+		public boolean isPhoneNumber() {
+			return phoneNumber != null;
 		}
 	}
 

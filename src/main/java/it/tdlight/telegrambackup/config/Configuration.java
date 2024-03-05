@@ -8,6 +8,13 @@ import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
 public class Configuration {
 
+	@JsonProperty(required = true, value = "api_id")
+	public int apiId;
+	@JsonProperty(required = true, value = "api_hash")
+	public String apiHash;
+	@JsonProperty(required = true, value = "sessions_path")
+	public String sessionsPath = ".tdlight-sessions";
+
 	@JsonProperty(required = true)
 	public UserSettings[] users;
 

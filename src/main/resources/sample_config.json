@@ -1,4 +1,7 @@
 {
+  "api_id": 1234,
+  "api_hash": "ABCD",
+  "sessions_path": ".telegram-backup/tdlight-session",
   "users": [
     {
       "alias": "example_user",

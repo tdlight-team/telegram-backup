@@ -41,10 +41,10 @@ public class Db {
 
 	public static void createTables() {
 		createTable("Update", "id BIGINT PRIMARY KEY AUTOINCREMENT, data TEXT");
-		createTable("Chat", "id BIGINT, name TEXT, description TEXT");
+		createTable("Chat", "id BIGINT, name TEXT, description TEXT, upgradeFrom BIGINT REFERENCS Chat(id), upgradeTo BIGINT REFERENCS Chat(id)");
 		createTable("Propic", "id BIGINT AUTOINCREMENT, chatId BIGINT REFERENCES Chat(id), idForUser INTEGER, media TEXT REFERENCES Media(id)");
-		createTable("Message", "id BIGINT PRIMARY KEY, chatId BIGINT REFERENCES Chat(id), updateId BIGINT REFERENCES Update(id), data TEXT");
-		createTable("Media", "id TEXT, path TEXT");
+		//createTable("Message", "id BIGINT PRIMARY KEY, chatId BIGINT REFERENCES Chat(id), updateId BIGINT REFERENCES Update(id), data TEXT");
+		createTable("Media", "id TEXT, path TEXT, BIGINT timestamp");
 		createIndex("Media_id", "Media", "id");
 		createTable("StickerPack", "id BIGINT PRIMARY KEY, name TEXT, title TEXT");
 		createTable("Poll", "id BIGINT, question TEXT");

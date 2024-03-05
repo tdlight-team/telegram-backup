@@ -12,14 +12,36 @@ import it.tdlight.client.SimpleTelegramClientFactory;
 import it.tdlight.client.TDLibSettings;
 import it.tdlight.jni.TdApi;
 import it.tdlight.jni.TdApi.Chat;
+import it.tdlight.jni.TdApi.MessageAnimation;
+import it.tdlight.jni.TdApi.MessageAudio;
+import it.tdlight.jni.TdApi.MessageChatChangePhoto;
+import it.tdlight.jni.TdApi.MessageChatChangeTitle;
+import it.tdlight.jni.TdApi.MessageChatUpgradeFrom;
+import it.tdlight.jni.TdApi.MessageChatUpgradeTo;
+import it.tdlight.jni.TdApi.MessageContent;
+import it.tdlight.jni.TdApi.MessageDocument;
+import it.tdlight.jni.TdApi.MessagePhoto;
+import it.tdlight.jni.TdApi.MessagePoll;
 import it.tdlight.jni.TdApi.MessageSender;
+import it.tdlight.jni.TdApi.MessageSticker;
+import it.tdlight.jni.TdApi.MessageText;
+import it.tdlight.jni.TdApi.MessageVideo;
+import it.tdlight.jni.TdApi.MessageVideoNote;
+import it.tdlight.jni.TdApi.MessageVoiceNote;
 import it.tdlight.jni.TdApi.Update;
 import it.tdlight.jni.TdApi.UpdateAuthorizationState;
 import it.tdlight.jni.TdApi.UpdateNewMessage;
+import it.tdlight.telegrambackup.MessageHandler;
 import it.tdlight.telegrambackup.config.Configuration;
+import it.tdlight.telegrambackup.db.Db;
+import it.tdlight.telegrambackup.db.PreparedStatement;
 import it.tdlight.util.UnsupportedNativeLibraryException;
+
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.util.Base64;
 
 public class TelegramSessionManager implements AutoCloseable {
 
@@ -78,11 +100,21 @@ public class TelegramSessionManager implements AutoCloseable {
 	}
 
 	private void onUpdate(Update update) {
-
+		PreparedStatement ps = null;
+		try {
+			ps = Db.getConn().prepareStatement("INSERT INTO Update(data) VALUES (?)", true);
+			ps.setString(1, Base64.getEncoder().encodeToString(update.serialize())); //TODO diocane
+			ps.getGeneratedKeys();
+						
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(ps != null) ps.close();
+		}
 	}
 
 	private void onUpdateNewMessage(UpdateNewMessage updateNewMessage) {
-
+		MessageHandler.handleMessage(updateNewMessage.message);
 	}
 
 	private void onStopCommand(Chat chat, MessageSender messageSender, String s) {

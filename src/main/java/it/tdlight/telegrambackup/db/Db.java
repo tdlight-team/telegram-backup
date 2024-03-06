@@ -21,7 +21,7 @@ public class Db {
 
 	public static void closeConnection() {
 		try {
-			c.close();
+			if(c != null) c.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -40,21 +40,42 @@ public class Db {
 
 
 	public static void createTables() {
-		createTable("Update", "id BIGINT PRIMARY KEY AUTOINCREMENT, data TEXT");
-		createTable("Chat", "id BIGINT, name TEXT, description TEXT, upgradeFrom BIGINT REFERENCS Chat(id), upgradeTo BIGINT REFERENCS Chat(id)");
-		createTable("Propic", "id BIGINT AUTOINCREMENT, chatId BIGINT REFERENCES Chat(id), idForUser INTEGER, media TEXT REFERENCES Media(id)");
+		createTable("Chat", "id BIGINT PRIMARY KEY,"
+						  //+ "name TEXT NOT NULL,"
+						  //+ "description TEXT,"
+						  + "upgradeFrom BIGINT REFERENCES Chat(id),"
+						  + "upgradeTo BIGINT REFERENCES Chat(id)");
+		createTable("Update", "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+							+ "data TEXT NOT NULL,"
+							+ "chatId BIGINT REFERENCS Chat(id),"
+							+ "messageId BIGINT,"
+							+ "timestamp BIGINT,"
+							+ "updateType INTEGER");
+		//createTable("Propic", "id INTEGER AUTOINCREMENT, chatId BIGINT REFERENCES Chat(id), idForUser INTEGER, media TEXT REFERENCES Media(id)");
 		//createTable("Message", "id BIGINT PRIMARY KEY, chatId BIGINT REFERENCES Chat(id), updateId BIGINT REFERENCES Update(id), data TEXT");
-		createTable("Media", "id TEXT, path TEXT, BIGINT timestamp");
-		createIndex("Media_id", "Media", "id");
-		createTable("StickerPack", "id BIGINT PRIMARY KEY, name TEXT, title TEXT");
-		createTable("Poll", "id BIGINT, question TEXT");
-		createTable("PollOption", "id BIGINT AUTOINCREMENT, text TEXT, voterCount INTEGER, pollId BIGINT REFERENCES Poll(id), idInPoll INTEGER");
+		createTable("Media", "id TEXT PRIMARY KEY,"
+						   + "path TEXT NOT NULL,"
+						   + "BIGINT timestamp NOT NULL");
+		//createIndex("Media_id", "Media", "id");
+		createTable("StickerPack", "id BIGINT PRIMARY KEY,"
+								 + "name TEXT,"
+								 + "title TEXT");
+		createTable("Sticker", "id BIGINT PRIMARY KEY,"
+							 + "emoji TEXT,"
+							 + "mediaId TEXT REFERENCS Media(id)");
+		createTable("Poll", "id BIGINT PRIMARY KEY,"
+						  + "question TEXT NOT NULL");
+		createTable("PollOption", "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+								+ "text TEXT NOT NULL,"
+								+ "voterCount INTEGER,"
+								+ "pollId BIGINT REFERENCES Poll(id) NOT NULL,"
+								+ "idInPoll INTEGER NOT NULL");
 	}
 	private static void createIndex(String indexName, String tableName, String key) {
 		Statement stmt = null;
 		Connection.Handle h = null;
 		try {
-			h = c.getHandle(true, true);
+			h = getConn().getHandle(true, true);
 			stmt = h.getConnection().createStatement();
 			stmt.execute("CREATE UNIQUE INDEX " + indexName + " ON " + tableName + " (" + key + ");");
 			stmt.close();
@@ -69,13 +90,14 @@ public class Db {
 		java.sql.PreparedStatement p = null;
 		ResultSet rs = null;
 		try {
-			Class.forName("org.sqlite.JDBC");
-			h = c.getHandle(true, true);
+			h = getConn().getHandle(true, true);
 			java.sql.Connection c = h.getConnection();
 			DatabaseMetaData dbm = c.getMetaData();
 			rs = dbm.getTables(null, null, tableName, null);
 			if (!rs.next()) {
-				p = c.prepareStatement("CREATE TABLE \"" + tableName + "\" (" + keys + ");");
+				String statement = "CREATE TABLE \"" + tableName + "\" (" + keys + ");";
+				System.out.println(statement);
+				p = c.prepareStatement(statement);
 				p.execute();
 				p.close();
 			}

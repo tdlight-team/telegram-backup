@@ -1,6 +1,7 @@
 package it.tdlight.telegrambackup;
 
 import it.tdlight.telegrambackup.config.Configuration.UserSettings;
+import it.tdlight.telegrambackup.db.Db;
 import it.tdlight.telegrambackup.config.ConfigurationException;
 import it.tdlight.telegrambackup.config.ConfigurationManager;
 import it.tdlight.telegrambackup.telegram.TelegramSessionManager;
@@ -26,9 +27,11 @@ public class TelegramBackup implements Closeable {
 	}
 
 	public void run() throws Exception {
-		configurationManager.initialize();
+		//configurationManager.initialize();
 
-		sessionManager.initialize(configurationManager.getConfig());
+		//sessionManager.initialize(configurationManager.getConfig());
+		
+		Db.createTables();
 	}
 
 	@Override

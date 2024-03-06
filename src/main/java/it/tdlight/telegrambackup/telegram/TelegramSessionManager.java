@@ -119,6 +119,39 @@ public class TelegramSessionManager implements AutoCloseable {
 		}).toList();
 
 	}
+	
+	/* Usefull updates list: https://tdlight-team.github.io/tdlight-docs/tdlight.api/it/tdlight/jni/package-tree.html
+		it.tdlight.jni.TdApi.UpdateBasicGroup
+		it.tdlight.jni.TdApi.UpdateBasicGroupFullInfo
+		it.tdlight.jni.TdApi.UpdateChatLastMessage
+		it.tdlight.jni.TdApi.UpdateChatPhoto
+		it.tdlight.jni.TdApi.UpdateChatTitle
+		it.tdlight.jni.TdApi.UpdateDeleteMessages
+		it.tdlight.jni.TdApi.UpdateFile
+		it.tdlight.jni.TdApi.UpdateFileAddedToDownloads
+		it.tdlight.jni.TdApi.UpdateFileDownload
+		it.tdlight.jni.TdApi.UpdateFileDownloads
+		it.tdlight.jni.TdApi.UpdateFileRemovedFromDownloads
+		it.tdlight.jni.TdApi.UpdateInstalledStickerSets
+		it.tdlight.jni.TdApi.UpdateMessageContent
+		it.tdlight.jni.TdApi.UpdateMessageEdited
+		it.tdlight.jni.TdApi.UpdateMessageInteractionInfo
+		it.tdlight.jni.TdApi.UpdateMessageIsPinned
+		it.tdlight.jni.TdApi.UpdateNewChat
+		it.tdlight.jni.TdApi.UpdateNewMessage
+		it.tdlight.jni.TdApi.UpdateOption
+		it.tdlight.jni.TdApi.UpdatePoll
+		it.tdlight.jni.TdApi.UpdatePollAnswer
+		it.tdlight.jni.TdApi.UpdateRecentStickers
+		it.tdlight.jni.TdApi.UpdateSavedAnimations
+		it.tdlight.jni.TdApi.UpdateServiceNotification
+		it.tdlight.jni.TdApi.UpdateStickerSet
+		it.tdlight.jni.TdApi.UpdateSupergroup
+		it.tdlight.jni.TdApi.UpdateSupergroupFullInfo
+		it.tdlight.jni.TdApi.UpdateUser
+		it.tdlight.jni.TdApi.UpdateUserFullInfo
+		(list may not be complete)
+	*/
 
 	private Path getSessionPath(Path sessionsPath, UserSettings user) {
 		return sessionsPath.resolve(user.alias);
